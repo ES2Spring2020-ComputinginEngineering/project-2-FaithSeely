@@ -43,8 +43,8 @@ def graphData(glucose, hemoglobin, classification):
 #of levels of glucose and hemoglobin in a person and their CKD diagnosis.
 #This is a void function
     plt.figure()
-    plt.plot(hemoglobin[classification==1], glucose[classification==1],'b.', label = 'CKD')
-    plt.plot(hemoglobin[classification==0], glucose[classification==0],'r.', label = 'Not CKD')
+    plt.plot(hemoglobin[classification==1], glucose[classification==1],'b.', label = 'Not CKD')
+    plt.plot(hemoglobin[classification==0], glucose[classification==0],'r.', label = 'CKD')
     plt.xlabel('Hemoglobin')
     plt.ylabel('Glucose')
     plt.legend()
@@ -90,35 +90,52 @@ def nearestNeighborClassifier(newglucose, newhemoglobin, glucose, hemoglobin, cl
 
 def graphTestCase(newglucose, newhemoglobin, glucose, hemoglobin, classification):
 #Graphs the arrays of training data and the test case. Test case is graphed as
-#a magenta star. The function use raw or normalized data.
+#a magenta star. CKD point are red and not CKD points are blue. The function
+#can use raw or normalized data.
 #Parameters newglucose and newhemoglobin are the glucose level and the
 #hemoglobin level of the test case, respectively. Parameters glucose and
 #hemoglobin are arrays of the training set glucose and hemoglobin data,
 #respectively. This is a void function.
     plt.figure()
-    plt.plot(hemoglobin[classification==1], glucose[classification==1],'b.', label = 'CKD')
-    plt.plot(hemoglobin[classification==0], glucose[classification==0],'r.', label = 'Not CKD')
+    plt.plot(hemoglobin[classification==1], glucose[classification==1],'b.', label = 'Not CKD')
+    plt.plot(hemoglobin[classification==0], glucose[classification==0],'r.', label = 'CKD')
     plt.plot(newglucose, newhemoglobin,'m*')
     plt.xlabel('Hemoglobin')
     plt.ylabel('Glucose')
     plt.legend()
+
+def kNearestNeighborClassifier(k, newglucose, newhemoglobin, glucose, hemoglobin, classification):
+#Finds the indeces of the k points in the given training set that are the
+#closest to the given test case and determines the mean classification of those
+#points, which will be what the classification of the test case is.
+#Parameters newglucose and newhemoglobin are the scaled glucose level and the
+#scaled hemoglobin level of the test case, respectively. Parameters glucose and
+#hemoglobin are arrays of normalized glucose and hemoglobin data, respectively.
+#Parameter k is an odd integer that is the number of closest points to be
+#considered in the determination of the classification of the test case.
+    distanceArray = calculateDistanceArray(newglucose, newhemoglobin, glucose, hemoglobin)
+    sorted_indices = np.argsort(distanceArray)
+    k_indices = sorted_indices[:k]
+    k_classifications = classification[k_indices]
+    return k_classifications.mean()
     
 # MAIN SCRIPT
 glucose, hemoglobin, classification = openckdfile()
 
-plt.figure()
-plt.plot(hemoglobin[classification==1],glucose[classification==1], "k.", label = "Class 1")
-plt.plot(hemoglobin[classification==0],glucose[classification==0], "r.", label = "Class 0")
-plt.xlabel("Hemoglobin")
-plt.ylabel("Glucose")
-plt.legend()
-plt.show()
+#plt.figure()
+#plt.plot(hemoglobin[classification==1],glucose[classification==1], "k.", label = "Class 1")
+#plt.plot(hemoglobin[classification==0],glucose[classification==0], "r.", label = "Class 0")
+#plt.xlabel("Hemoglobin")
+#plt.ylabel("Glucose")
+#plt.legend()
+#plt.show()
 
 normGlucose, normHemoglobin, classification = normalizeData(glucose, hemoglobin, classification)
 graphData(normGlucose, normHemoglobin, classification)
 
 newhemoglobin, newglucose = createTestCase()
-print(test)
+print(newhemoglobin, newglucose)
 graphTestCase(newglucose, newhemoglobin, normGlucose, normHemoglobin, classification)
 
 print(nearestNeighborClassifier(newglucose, newhemoglobin, normGlucose, normHemoglobin, classification))
+print(kNearestNeighborClassifier(3, newglucose, newhemoglobin, normGlucose, normHemoglobin, classification))
