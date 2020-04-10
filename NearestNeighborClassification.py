@@ -117,7 +117,8 @@ def kNearestNeighborClassifier(k, newglucose, newhemoglobin, glucose, hemoglobin
     sorted_indices = np.argsort(distanceArray)
     k_indices = sorted_indices[:k]
     k_classifications = classification[k_indices]
-    return k_classifications.mean()
+    sorted_k_classifications = np.sort(k_classifications)
+    return sorted_k_classifications.median()
     
 # MAIN SCRIPT
 glucose, hemoglobin, classification = openckdfile()
