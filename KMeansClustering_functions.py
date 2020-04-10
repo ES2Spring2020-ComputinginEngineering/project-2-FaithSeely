@@ -140,3 +140,21 @@ def unscaleCentroids(normGlucose, normHemoglobin, glucose, hemoglobin):
         unscaled_hemoglobin[i] = unscaled_point
     return unscaled_glucose, unscaled_hemoglobin
 
+def graphKMeans(glucose, hemoglobin, assignment, centroidHemoglobin, centroidGlucose):
+#This function graphs a data set with different colors for the clusters. The
+#centroids of the clusters are graphed as black diamonds. Parameters glucose
+#and hemoglobin are the arrays of glucose and hemoglobin values for the data
+#set, respectively. assignment is the array of classifications for the points
+#in the data set. centroidHemoglobin and centroidGlucose are the arrays for the
+#glucose and hemoglobin values of the centroids, respectively. This is a void
+#function.
+    plt.figure()
+    for i in range(int(assignment.max())+1):
+        rcolor = np.random.rand(3,)
+        plt.plot(hemoglobin[assignment==i],glucose[assignment==i], ".", label = "Class " + str(i), color = rcolor)
+    plt.plot(centroidHemoglobin, centroidGlucose, "D", label = "Centroids", color ='k')
+    plt.xlabel("Hemoglobin")
+    plt.ylabel("Glucose")
+    plt.legend()
+    plt.show()
+

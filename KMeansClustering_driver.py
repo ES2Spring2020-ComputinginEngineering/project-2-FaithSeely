@@ -8,6 +8,8 @@ normGlucose, normHemoglobin, classification = kmc.normalizeData(glucose, hemoglo
 
 initialCentroidGlucose, initialCentroidHemoglobin = kmc.generateInitialCentroids(2)
 normCentroidGlucose, normCentroidHemoglobin, centroidClass = kmc.generateNormCentroids(2)
+print('Starting Centroid Glucose Values:', normCentroidGlucose)
+print('Starting Centroid Hemoglobin Values:', normCentroidHemoglobin)
 
 newClassifications = np.zeros(glucose.size)
 while not np.array_equal(initialCentroidGlucose, normCentroidGlucose) and not np.array_equal(initialCentroidHemoglobin, normCentroidHemoglobin):
@@ -30,19 +32,5 @@ print('Unscaled Centroid Glucose:', unscaled_glucose)
 print('Unscaled Centroid Hemoglobin:', unscaled_hemoglobin)
 print(newClassifications)
 
-plt.figure()
-plt.plot(normHemoglobin[newClassifications==1], normGlucose[newClassifications==1],'b.')
-plt.plot(normHemoglobin[newClassifications==0], normGlucose[newClassifications==0],'r.')
-plt.plot(normCentroidHemoglobin, normCentroidGlucose, 'k*', label = 'Centroid')
-plt.xlabel('Hemoglobin')
-plt.ylabel('Glucose')
-plt.legend()
-
-plt.figure()
-plt.plot(hemoglobin[newClassifications==1], glucose[newClassifications==1],'b.', label = 'Not CKD')
-plt.plot(hemoglobin[newClassifications==0], glucose[newClassifications==0],'r.', label = 'CKD')
-plt.plot(unscaled_hemoglobin, unscaled_glucose, 'k*', label = 'Centroid')
-plt.xlabel('Hemoglobin')
-plt.ylabel('Glucose')
-plt.legend()
-plt.show()
+kmc.graphKMeans(normGlucose, normHemoglobin, newClassifications, normCentroidHemoglobin, normCentroidGlucose)
+kmc.graphKMeans(glucose, hemoglobin, newClassifications, unscaled_hemoglobin, unscaled_glucose)
