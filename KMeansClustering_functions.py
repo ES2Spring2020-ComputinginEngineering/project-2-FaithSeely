@@ -14,7 +14,7 @@ def openckdfile():
     return glucose, hemoglobin, classification
 
 def normalizeData(glucose, hemoglobin, classification):
-#Normalizes the given data by finding minimums and maxiumums of the data and
+#Normalizes the given data by finding minimums and maximums of the data and
 #scaling it so the new values are between 0 and 1.
 #Takes parameters glucose, hemoglobin, and classification, which are arrays
 #of levels of glucose and hemoglobin in a person and their CKD diagnosis.
@@ -158,3 +158,41 @@ def graphKMeans(glucose, hemoglobin, assignment, centroidHemoglobin, centroidGlu
     plt.legend()
     plt.show()
 
+def calculateAccuracy(classification, newclassification):
+#This function calculates and prints the True Positives Rate, False Positives
+#Rate, True Negatives Rate, and False Negatives Rate. The parameter 
+#classification is an array of the actual classifications of the data set while
+#newclassification is an array of the classification determined by K-Means
+#Clustering. This is a void function.
+    truePositive = 0
+    trueNegative = 0
+    falsePositive = 0
+    falseNegative = 0
+    for i in range(len(classification)):
+        if classification[i] == newclassification[i]:
+            if classification[i] == 1:
+                truePositive = truePositive + 1
+            elif classification[i] == 0:
+                trueNegative = trueNegative + 1
+            else:
+                print('if branch 1 went wrong.')
+        elif classification[i] != newclassification[i]:
+            if newclassification[i] == 1:
+                falsePositive = falsePositive + 1
+            elif newclassification[i] == 0:
+                falseNegative = falseNegative + 1
+            else:
+                print('if branch 2 went wrong.')
+        else:
+            print('The whole thing went wrong.')
+    truePositivePercent = (truePositive / 43)*100
+    trueNegativePercent = (trueNegative / 115)*100
+    falsePositivePercent = (falsePositive / 115)*100
+    falseNegativePercent = (falseNegative / 43)*100
+    print('True Positives Rate:', truePositivePercent)
+    print('False Positives Rate:', falsePositivePercent)
+    print('True Negatives Rate:', trueNegativePercent)
+    print('False Negatives Rate:', falseNegativePercent)
+
+            
+        

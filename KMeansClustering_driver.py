@@ -1,7 +1,9 @@
+#Faith Seely
+#I worked alone on this assignment
+#Script for K-Means Clustering
 #Please place your FUNCTION code for step 4 here.
 import KMeansClustering_functions as kmc #Use kmc to call your functions
 import numpy as np
-import matplotlib.pyplot as plt
 
 glucose, hemoglobin, classification = kmc.openckdfile()
 normGlucose, normHemoglobin, classification = kmc.normalizeData(glucose, hemoglobin, classification)
@@ -34,3 +36,5 @@ print(newClassifications)
 
 kmc.graphKMeans(normGlucose, normHemoglobin, newClassifications, normCentroidHemoglobin, normCentroidGlucose)
 kmc.graphKMeans(glucose, hemoglobin, newClassifications, unscaled_hemoglobin, unscaled_glucose)
+
+kmc.calculateAccuracy(classification, newClassifications)
