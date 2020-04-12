@@ -8,8 +8,9 @@ import numpy as np
 glucose, hemoglobin, classification = kmc.openckdfile()
 normGlucose, normHemoglobin, classification = kmc.normalizeData(glucose, hemoglobin, classification)
 
-initialCentroidGlucose, initialCentroidHemoglobin = kmc.generateInitialCentroids(2)
-normCentroidGlucose, normCentroidHemoglobin, centroidClass = kmc.generateNormCentroids(2)
+k = 2
+initialCentroidGlucose, initialCentroidHemoglobin = kmc.generateInitialCentroids(k)
+normCentroidGlucose, normCentroidHemoglobin, centroidClass = kmc.generateNormCentroids(k)
 print('Starting Centroid Glucose Values:', normCentroidGlucose)
 print('Starting Centroid Hemoglobin Values:', normCentroidHemoglobin)
 
@@ -21,7 +22,7 @@ while not np.array_equal(initialCentroidGlucose, normCentroidGlucose) and not np
     for i in range(len(normGlucose)):
         pointClass = kmc.nearestCentroidClassifier(normGlucose[i], normHemoglobin[i], normCentroidGlucose, normCentroidHemoglobin, centroidClass)
         newClassifications[i] = pointClass
-    for i in range(2):
+    for i in range(k):
         meanGlucose, meanHemoglobin = kmc.calculateClusterMean(i, normGlucose, normHemoglobin, newClassifications)
         normCentroidGlucose[i] = meanGlucose
         normCentroidHemoglobin[i] = meanHemoglobin
